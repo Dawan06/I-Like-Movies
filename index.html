@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>I Like Movies | Cinematic Discovery</title>
+<script src="../scripts/tailwind-config.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="icon" href="../assets/logo.png" type="image/png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body class="bg-dark-bg min-h-screen font-sans text-light-gray">
+
+<header class="sticky-header sticky top-0 z-40 bg-dark-bg/90 backdrop-blur-md shadow-2xl border-b border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col sm:flex-row justify-between items-center gap-2">
+        <div class="flex-shrink-0 w-full sm:w-auto text-center sm:text-left">
+            <h1 id="homeTitle" class="text-3xl font-extrabold text-netflix-red tracking-tighter cursor-pointer hover:opacity-80 transition-opacity duration-200">I Like Movies</h1>
+            <p class="text-xs text-gray-500 italic hidden sm:block">A modern cinematic discovery experience</p>
+        </div>
+        <div class="p-2 sm:p-0 w-full sm:w-auto">
+            <nav id="discoveryTabs" class="flex flex-wrap justify-center sm:justify-end gap-0 sm:gap-1" role="tablist" aria-label="Discovery categories">
+                <button class="tab-button active" data-type="home" role="tab" aria-selected="true" aria-controls="resultsContainer">Home</button>
+                <button class="tab-button" data-type="now_playing" role="tab" aria-selected="false" aria-controls="resultsContainer">Now Playing</button>
+                <button class="tab-button" data-type="trending_weekly" role="tab" aria-selected="false" aria-controls="resultsContainer">Trending</button>
+                <button class="tab-button" data-type="top_rated" role="tab" aria-selected="false" aria-controls="resultsContainer">Top Rated</button>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<main class="layout-container max-w-7xl mx-auto p-4 md:p-8">
+    <div class="p-4 bg-dark-bg/90 backdrop-blur-md rounded-xl shadow-2xl mb-8 sticky top-[80px] z-20 mt-4 sm:mt-0 border border-gray-800 search-surface">
+        <div class="relative flex flex-col sm:flex-row gap-3">
+            <input id="mediaInput" type="text" placeholder="Search for a movie or TV show title..." class="flex-grow p-3 bg-gray-700/50 text-white border border-gray-600 rounded-lg focus:ring-2 focus:ring-netflix-red focus:border-transparent transition duration-200 shadow-inner placeholder-gray-500" aria-label="Search for movies and TV shows" aria-autocomplete="list" aria-controls="autocomplete-results"/>
+            <button id="searchBtn" class="bg-netflix-red text-white font-bold py-3 px-6 rounded-lg shadow-netflix-red/40 shadow-lg hover:bg-opacity-90 transition duration-300 transform hover:scale-[1.01] active:scale-100 uppercase tracking-wider w-full sm:w-auto">Search</button>
+            <div id="autocomplete-results" class="absolute top-full left-0 right-0 mt-1 bg-suggestion-bg rounded-lg shadow-2xl overflow-hidden z-30 max-h-80 overflow-y-auto hidden border border-gray-700" role="listbox" aria-label="Search suggestions"></div>
+        </div>
+    </div>
+    
+    <div id="heroContainer" class="w-full mb-8 relative"></div>
+    <div id="resultsContainer" class="min-h-[200px] flex flex-wrap justify-center relative z-10"></div>
+
+    <div id="notificationModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center p-4 z-50" role="dialog" aria-modal="true" aria-labelledby="notificationTitle">
+        <div class="bg-gray-700 p-6 rounded-xl shadow-2xl max-w-sm w-full border-t-4 border-red-500">
+            <h3 id="notificationTitle" class="text-xl font-bold text-red-400 mb-3">Error</h3>
+            <p id="notificationText" class="text-gray-300 mb-4"></p>
+            <button id="notifyOk" class="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition" aria-label="Close notification">Got It</button>
+        </div>
+    </div>
+</main>
+
+<button id="scrollTopBtn" title="Go to top" aria-label="Scroll to top" class="fixed bottom-6 right-6 z-50 w-12 h-12 bg-netflix-red text-white rounded-full shadow-lg hidden justify-center items-center text-2xl transition-all duration-300 hover:bg-opacity-80 transform hover:scale-110">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
+<script type="module" src="../scripts/core/main.js"></script>
+</body>
+</html>

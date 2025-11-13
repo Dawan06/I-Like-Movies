@@ -1,0 +1,76 @@
+/* Utilities */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* Tailwind Color Fallbacks */
+.text-netflix-red {
+  color: var(--color-netflix-red) !important;
+}
+
+.bg-netflix-red {
+  background-color: var(--color-netflix-red) !important;
+}
+
+.bg-dark-bg {
+  background-color: var(--color-dark-bg) !important;
+}
+
+.bg-card-bg {
+  background-color: var(--color-card-bg) !important;
+}
+
+.bg-detail-card {
+  background-color: var(--color-detail-card) !important;
+}
+
+.bg-suggestion-bg {
+  background-color: var(--color-suggestion-bg) !important;
+}
+
+.text-light-gray {
+  color: var(--color-light-gray) !important;
+}
+
+.border-netflix-red {
+  border-color: var(--color-netflix-red) !important;
+}
+
+.focus\:ring-netflix-red:focus {
+  --tw-ring-color: var(--color-netflix-red) !important;
+  box-shadow: 0 0 0 2px var(--color-netflix-red) !important;
+}
+
+/* Opacity Variants */
+.bg-dark-bg\/90 {
+  background-color: rgba(10, 10, 10, 0.9) !important;
+}
+
+.bg-gray-700\/50 {
+  background-color: rgba(55, 65, 81, 0.5) !important;
+}
+
+.bg-gray-800\/80 {
+  background-color: rgba(31, 41, 55, 0.8) !important;
+}
+
+.bg-card-bg\/70 {
+  background-color: rgba(24, 24, 24, 0.7) !important;
+}
+
+.border-netflix-red\/50 {
+  border-color: rgba(229, 9, 20, 0.5) !important;
+}
+
+.shadow-netflix-red\/40 {
+  box-shadow: 0 10px 15px -3px rgba(229, 9, 20, 0.4), 0 4px 6px -2px rgba(229, 9, 20, 0.4) !important;
+}
+

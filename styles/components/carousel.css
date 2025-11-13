@@ -1,0 +1,105 @@
+/* Carousel & Media Shelf */
+
+.media-shelf {
+  animation: fadeInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.shelf-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 1rem;
+  padding: 1.5rem 0.5rem 2rem;
+  scrollbar-width: thin;
+  scrollbar-color: #444 var(--color-dark-bg);
+}
+
+.shelf-scroll-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.shelf-scroll-container::-webkit-scrollbar-track {
+  background: var(--color-dark-bg);
+}
+
+.shelf-scroll-container::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: var(--radius-sm);
+}
+
+.media-card-shelf {
+  width: 176px;
+  flex-shrink: 0;
+  background-color: rgba(30, 30, 30, 0.95);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow: hidden;
+}
+
+@media (max-width: 480px) {
+  .media-card-shelf {
+    width: 140px;
+  }
+}
+
+.media-card-shelf:hover {
+  transform: translateY(-6px) scale(1.06);
+  box-shadow: var(--shadow-strong);
+}
+
+.media-card-shelf img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+/* Hero Carousel */
+.hero-item {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.hero-item.active {
+  opacity: 1;
+  z-index: 5;
+}
+
+.hero-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  padding: 3rem 4rem;
+  max-width: 900px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+@media (max-width: 768px) {
+  .hero-content {
+    padding: 2rem;
+  }
+}
+
+.hero-indicator {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin: 0 7px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: transform 0.35s ease, background-color 0.35s ease;
+  border: 2px solid transparent;
+}
+
+.hero-indicator.active {
+  background-color: #fff;
+  transform: scale(1.5);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
+}
+
