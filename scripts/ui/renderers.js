@@ -188,17 +188,24 @@ export const renderGallery = (mediaList, { isNewLoad, title, reachedEnd }) => {
           role="button"
           tabindex="0"
           aria-label="${titleText} - ${typeLabel} (${year}) - Rating: ${rating}">
+          
           <div class="relative" data-id="${media.id}" data-type="${mediaType}">
             <img src="${posterUrl}" alt="${titleText} Poster"
               class="w-full aspect-[2/3] object-cover rounded-t-xl transition duration-500 group-hover:opacity-80 image-loading"
               loading="lazy"
               onload="this.classList.add('image-loaded');"
               onerror="this.onerror=null;this.src='https://placehold.co/342x513/181818/d4d4d4?text=${placeholder}';this.classList.add('image-loaded');">
-            <div class="absolute top-3 right-3 bg-gray-800/80 backdrop-blur-sm text-white text-sm font-bold px-2.5 py-1 rounded-full shadow-lg border border-gray-700"
+
+            <!-- Sleek Minimal Rating Badge -->
+            <div class="absolute top-3 right-3 bg-black/60 backdrop-blur-md text-white text-sm font-semibold px-2.5 py-1.5 rounded-lg shadow-md flex items-center gap-1"
               aria-label="Rating: ${rating} out of 10">
-              <i class="fas fa-star text-yellow-400 mr-1" aria-hidden="true"></i>${rating}
+              <svg class="w-4 h-4 text-yellow-300" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
+              <span>${rating}</span>
             </div>
           </div>
+
           <div class="p-4" data-id="${media.id}" data-type="${mediaType}">
             <h3 class="text-base font-extrabold text-light-gray truncate group-hover:text-netflix-red">${titleText}</h3>
             <p class="text-sm text-gray-500 mt-1">${typeLabel} • ${year}</p>
@@ -216,41 +223,6 @@ export const renderGallery = (mediaList, { isNewLoad, title, reachedEnd }) => {
       '<p data-end-marker class="text-gray-400 text-center w-full mt-8 pb-12">-- End of Results --</p>'
     );
   }
-};
-
-const renderCastAvatars = (cast) => {
-  const profileBaseUrl = `${IMAGE_BASE_URL}w185`;
-  const list = cast.slice(0, 6);
-  if (!list.length) {
-    return '<p class="text-gray-400">No cast information available.</p>';
-  }
-
-  const items = list
-    .map((member) => {
-      const profilePath = member.profile_path
-        ? `${profileBaseUrl}${member.profile_path}`
-        : PLACEHOLDER_PROFILE;
-      return `
-        <div class="cast-member" data-person-id="${member.id}" data-person-name="${member.name}">
-          <img src="${profilePath}" alt="${member.name}" class="cast-image"
-            onerror="this.onerror=null;this.src='${PLACEHOLDER_PROFILE}';">
-          <p class="text-xs text-gray-300 font-semibold truncate w-20 mx-auto">${member.name}</p>
-          <p class="text-xs text-gray-500 italic truncate w-20 mx-auto">${member.character}</p>
-        </div>
-      `;
-    })
-    .join('');
-
-  return `
-    <div class="bg-card-bg p-5 rounded-xl border border-gray-700 mb-6">
-      <h4 class="text-xl font-bold text-white mb-4 flex items-center">
-        <i class="fas fa-mask mr-3 text-netflix-red"></i>Top Cast
-      </h4>
-      <div id="castContainer" class="cast-container">
-        ${items}
-      </div>
-    </div>
-  `;
 };
 
 const getCertification = (details, isMovie) => {
@@ -314,15 +286,16 @@ export const renderDetailView = (
 
   const productionLogos = (production_companies || [])
     .filter((company) => company.logo_path)
-    .map(
-      (company) => `
-        <div class="detail-production-logo-item">
+    .map((company) => {
+      const safeName = encodeURIComponent(company.name);
+      return `
+        <div class="detail-production-logo-item" data-company-name="${safeName}" role="button" tabindex="0" aria-label="Search Google for ${company.name}">
           <img src="${buildImageUrl('w92', company.logo_path)}" alt="${company.name} Logo"
             title="${company.name}" class="detail-production-logo"
             onerror="this.onerror=null;this.style.display='none';">
         </div>
-      `
-    )
+      `;
+    })
     .join('');
 
   const trailerUrl = trailerKey ? `https://www.youtube.com/watch?v=${trailerKey}` : '#';
@@ -377,8 +350,9 @@ export const renderDetailView = (
     const profilePath = member.profile_path
       ? `${IMAGE_BASE_URL}w185${member.profile_path}`
       : PLACEHOLDER_PROFILE;
+    const safeName = encodeURIComponent(member.name);
     return `
-      <div class="detail-cast-item">
+      <div class="detail-cast-item" data-actor-name="${safeName}" role="button" tabindex="0" aria-label="Search Google for ${member.name}">
         <img src="${profilePath}" alt="${member.name}" class="detail-cast-image"
           onerror="this.onerror=null;this.src='${PLACEHOLDER_PROFILE}';">
         <div class="detail-cast-name">${member.name}</div>
@@ -388,17 +362,12 @@ export const renderDetailView = (
   }).join('');
 
   // Quick facts for poster section
-  const releaseYear = release_date 
-    ? new Date(release_date).getFullYear() 
-    : first_air_date 
-    ? new Date(first_air_date).getFullYear() 
+  const releaseYear = (release_date || first_air_date)
+    ? new Date(release_date || first_air_date).getFullYear()
     : 'N/A';
-  const language = details.original_language 
-    ? details.original_language.toUpperCase() 
-    : 'N/A';
+  const language = details.original_language?.toUpperCase() || 'N/A';
   const country = details.production_countries?.[0]?.name || 'N/A';
-  
-  const genreList = (genres || []).map(genre => genre.name).join(', ') || 'N/A';
+  const genreList = genres?.map(genre => genre.name).join(', ') || 'N/A';
   
   const quickFacts = `
     <div class="detail-quick-facts">
@@ -484,7 +453,7 @@ export const renderDetailView = (
             </div>
           </div>
           <div class="detail-streaming-section">
-            <h3 class="detail-streaming-title">Streaming/Link Options</h3>
+            <h3 class="detail-streaming-title">Streaming Options</h3>
             <div class="detail-streaming-buttons">
               <a href="${trailerUrl}" target="_blank"
                 class="button-link btn-youtube ${trailerKey ? '' : 'cursor-not-allowed opacity-75'}"
@@ -509,6 +478,26 @@ export const renderDetailView = (
   `;
 
   getById('backBtn')?.addEventListener('click', () => onBack?.());
+
+  // Use event delegation for Google search - scoped to detail view container
+  const detailContainer = getById('resultsContainer')?.querySelector('.detail-view-container');
+  if (detailContainer) {
+    const handleGoogleSearch = (e) => {
+      const target = e.target.closest('[data-actor-name], [data-company-name]');
+      if (!target) return;
+
+      if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+      if (e.type === 'keydown') e.preventDefault();
+
+      const searchQuery = target.getAttribute('data-actor-name') || target.getAttribute('data-company-name');
+      if (searchQuery) {
+        window.open(`https://www.google.com/search?q=${searchQuery}`, '_blank');
+      }
+    };
+
+    detailContainer.addEventListener('click', handleGoogleSearch);
+    detailContainer.addEventListener('keydown', handleGoogleSearch);
+  }
 };
 
 export const renderHeroCarousel = (movies) => {
